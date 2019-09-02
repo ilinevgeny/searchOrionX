@@ -22,6 +22,8 @@ private slots:
 
     void on_actionSELECT_triggered();
 
+    void on_lineEdit_returnPressed();
+
 private:
     Ui::MainWindow *ui;
     QString sqlRequest;

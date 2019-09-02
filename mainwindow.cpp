@@ -23,16 +23,35 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     /* todo:
      * add load or changes settings for connection
-    */
-    DBOrionEngine *db = new DBOrionEngine("QPSQL", "localhost", "orionconcept", 5432, "postgres", "orion");
+     */
+    DBOrionEngine *db = new DBOrionEngine("QPSQL", "192.168.201.65", "orionconcept", 5432, "postgres", "orion");
     db->Connect();
     QString statusDb[2];
     statusDb[0] = (db->statusConnect) ? "Подключение успешно" : "Нет подключения";
     statusDb[1] = (db->statusConnect) ? "color: green" : "color: red;";
 
-    statusBar()->showMessage(statusDb[0]);
-    statusBar()->setStyleSheet("padding-bottom: 10px; "+statusDb[1]);
 
+
+    QSqlQuery query;
+    QString sQuery;
+    int countRows = 0;
+    sQuery = "SELECT count(*) as countemp FROM \"InstanceX\" WHERE \"IType\" = \'00000000-0000-0000-0000-000000008001\';";
+
+    if (query.exec(sQuery))
+    {
+        if(query.size() > 0)
+        {
+            while (query.next()) {
+                countRows = query.value("countemp").toInt();
+            }
+        }
+     }
+
+
+
+
+    statusBar()->showMessage(statusDb[0] + ". \n Количество сотрудников в таблице: " + QString::number(countRows));
+    statusBar()->setStyleSheet("padding-bottom: 10px; "+statusDb[1]);
 }
 
 
@@ -144,3 +163,9 @@ void MainWindow::on_actionSELECT_triggered()
     Sqlform *sForm = new Sqlform();
     sForm->show();
 }
+
+void MainWindow::on_lineEdit_returnPressed()
+{
+    this->on_pushButton_clicked();
+}
+
