@@ -20,8 +20,11 @@ private slots:
     void on_pushButton_clicked();
     void on_action_triggered();
 
+    void on_actionSELECT_triggered();
+
 private:
     Ui::MainWindow *ui;
+    QString sqlRequest;
 
 };
 

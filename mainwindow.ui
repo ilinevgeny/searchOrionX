@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>748</width>
-    <height>418</height>
+    <width>829</width>
+    <height>425</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Отладчик запросов Конфигуратора</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -100,7 +100,11 @@ padding-left: 10;</string>
     <item>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <widget class="QTableView" name="tableView"/>
+       <widget class="QTableView" name="tableView">
+        <property name="sortingEnabled">
+         <bool>true</bool>
+        </property>
+       </widget>
       </item>
      </layout>
     </item>
@@ -111,7 +115,7 @@ padding-left: 10;</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>748</width>
+     <width>829</width>
      <height>21</height>
     </rect>
    </property>
@@ -121,7 +125,14 @@ padding-left: 10;</string>
     </property>
     <addaction name="action"/>
    </widget>
+   <widget class="QMenu" name="menuSQL">
+    <property name="title">
+     <string>SQL</string>
+    </property>
+    <addaction name="actionSELECT"/>
+   </widget>
    <addaction name="menu"/>
+   <addaction name="menuSQL"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -131,10 +142,24 @@ padding-left: 10;</string>
     <bool>false</bool>
    </attribute>
   </widget>
-  <widget class="QStatusBar" name="statusBar"/>
+  <widget class="QStatusBar" name="statusBar">
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true"/>
+   </property>
+  </widget>
   <action name="action">
    <property name="text">
     <string>Подключения</string>
+   </property>
+  </action>
+  <action name="actionSELECT">
+   <property name="text">
+    <string>SELECT</string>
    </property>
   </action>
  </widget>
