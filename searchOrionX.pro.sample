@@ -25,14 +25,22 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+        appsettings.cpp \
         main.cpp \
-        mainwindow.cpp
+        mainwindow.cpp \
+        dborionengine.cpp \
+        sqlform.cpp
 
 HEADERS += \
-        mainwindow.h
+        appsettings.h \
+        mainwindow.h \
+        dborionengine.h \
+        sqlform.h
 
 FORMS += \
-        mainwindow.ui
+        appsettings.ui \
+        mainwindow.ui \
+        sqlform.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
