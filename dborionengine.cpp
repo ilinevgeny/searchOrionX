@@ -7,6 +7,13 @@ DBOrionEngine::DBOrionEngine(QString driver, QString server, QString dbName, int
     this->statusConnect = false;
 }
 
+DBOrionEngine::DBOrionEngine(AppSettings *settings)
+{
+    qDebug() << settings->getSetting("DB/Port");
+    setDBParams(settings->getSetting("DB/Driver"), settings->getSetting("DB/Server"), settings->getSetting("DB/DBName"), settings->getSetting("DB/Port").toInt(),
+                settings->getSetting("DB/User"), settings->getSetting("DB/Password"));
+}
+
 void DBOrionEngine::setDBParams(QString driver, QString server, QString dbName, int port, QString userName, QString password)
 {
     DBParams.Driver = driver;
@@ -23,7 +30,7 @@ void DBOrionEngine::Diconnect()
     db.close();
 }
 
-void DBOrionEngine::Connect()
+QSqlDatabase DBOrionEngine::Connect()
 {
 
     db = QSqlDatabase::addDatabase(DBParams.Driver);
@@ -40,4 +47,6 @@ void DBOrionEngine::Connect()
     } else {
        qDebug() << db.lastError();
     }
+
+    return db;
 }

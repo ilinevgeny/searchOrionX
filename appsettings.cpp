@@ -2,25 +2,31 @@
 #include "ui_appsettings.h"
 #include <QString>
 #include <QDebug>
+#include "dborionengine.h"
+
 AppSettings::AppSettings(QWidget *parent) :
     QWidget (parent),
     ui(new Ui::AppSettings)
 {
-
-
     this->dbSettings = new QSettings("BOLID", "searchApp");
 
 //    QSettings dbSettings("BOLID", "searchApp");
-     this->dbSettings->setValue("DB/Driver", "QPSQL");
-     this->dbSettings->setValue("DB/Server", "localhost");
-     this->dbSettings->setValue("DB/DBName", "orionconcept");
-     this->dbSettings->setValue("DB/Port", "5432");
-     this->dbSettings->setValue("DB/User", "postgres");
-     this->dbSettings->setValue("DB/Password", "orion");
+//     this->dbSettings->setValue("DB/Driver", "QPSQL");
+//     this->dbSettings->setValue("DB/Server", "localhost");
+//     this->dbSettings->setValue("DB/DBName", "orionconcept");
+//     this->dbSettings->setValue("DB/Port", "5432");
+//     this->dbSettings->setValue("DB/User", "postgres");
+//     this->dbSettings->setValue("DB/Password", "orion");
 
+    //this->setSettings("QPSQL", "localhost", "orionconcept", "5432", "postgres", "orion");
     ui->setupUi(this);
-    ui->LineEdit->setText(this->dbSettings->value("DB/Driver").toString());
-//    ui->LineEdit_2->setText(this->dbSettings->value("DB/Server").toString());
+
+    ui->driver->setText(this->dbSettings->value("DB/Driver").toString());
+    ui->server->setText(this->dbSettings->value("DB/Server").toString());
+    ui->dbname->setText(this->dbSettings->value("DB/DBName").toString());
+    ui->port->setText(this->dbSettings->value("DB/Port").toString());
+    ui->user->setText(this->dbSettings->value("DB/User").toString());
+    ui->password->setText(this->dbSettings->value("DB/Password").toString());
 
     this->correctSettings = false;
     this->setWindowFlags(Qt::Window);
@@ -32,6 +38,19 @@ AppSettings::~AppSettings()
 {
     delete ui;
 }
+void AppSettings::setSettings(QString driver, QString server, QString dbname, QString port, QString user, QString pass)
+{
+    this->dbSettings->setValue("DB/Driver", driver);
+    this->dbSettings->setValue("DB/Server", server);
+    this->dbSettings->setValue("DB/DBName", dbname);
+    this->dbSettings->setValue("DB/Port", port);
+    this->dbSettings->setValue("DB/User", user);
+    this->dbSettings->setValue("DB/Password", pass);
+}
+QString AppSettings::getSetting(QString setName)
+{
+    return dbSettings->value(setName).toString();
+}
 
 void AppSettings::on_pushButton_clicked()
 {
@@ -40,13 +59,22 @@ void AppSettings::on_pushButton_clicked()
 
 void AppSettings::saveButton()
 {
-
-    this->dbSettings->setValue("DB/Driver", ui->LineEdit->text());
-//    this->correctSettings = true;
-   if(!this->correctSettings) {
-        ui->textBrowser->setHtml("<b style=\"color: red\">Заданы неправильные параметры</b>");
+    this->setSettings(ui->driver->text(), ui->server->text(), ui->dbname->text(), ui->port->text(), ui->user->text(), ui->password->text());
+    DBOrionEngine *db = new DBOrionEngine(this);
+    db->Connect();
+    if(db->statusConnect)
+    {
+        this->close();
     }
 
+    qDebug() << this->dbSettings->value("DB/Driver").toString();
+    qDebug() << ui->driver->text();
+    this->correctSettings = true;
+   if(!this->correctSettings) {
+        ui->textBrowser->setHtml("<b style=\"color: red\">Заданы неправильные параметры</b>");
+   } else {
+
+   }
 
 }
 

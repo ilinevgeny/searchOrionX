@@ -24,11 +24,15 @@ MainWindow::MainWindow(QWidget *parent) :
     /* todo:
      * add load or changes settings for connection
      */
-    DBOrionEngine *db = new DBOrionEngine("QPSQL", "192.168.201.65", "orionconcept", 5432, "postgres", "orion");
-    db->Connect();
+    AppSettings *dbSettings = new AppSettings();
+    dbSettings->setSettings("QPSQL", "localhost", "orionconcept", "5432", "postgres", "orion");
+
+     //DBOrionEngine *db = new DBOrionEngine("QPSQL", "192.168.201.65", "orionconcept", 5432, "postgres", "orion");
+    this->connectHandler = new DBOrionEngine(dbSettings);
+    this->connectHandler->Connect();
     QString statusDb[2];
-    statusDb[0] = (db->statusConnect) ? "Подключение успешно" : "Нет подключения";
-    statusDb[1] = (db->statusConnect) ? "color: green" : "color: red;";
+    statusDb[0] = (this->connectHandler->statusConnect) ? "Подключение успешно" : "Нет подключения";
+    statusDb[1] = (this->connectHandler->statusConnect) ? "color: green" : "color: red;";
 
 
 
@@ -47,9 +51,6 @@ MainWindow::MainWindow(QWidget *parent) :
         }
      }
 
-
-
-
     statusBar()->showMessage(statusDb[0] + ". \n Количество сотрудников в таблице: " + QString::number(countRows));
     statusBar()->setStyleSheet("padding-bottom: 10px; "+statusDb[1]);
 }
@@ -57,14 +58,24 @@ MainWindow::MainWindow(QWidget *parent) :
 
 void MainWindow::on_pushButton_clicked()
 {
-    ui->statusBar->showMessage("");
-    ui->statusBar->setStyleSheet("color: unset");
+
+
+    //ui->statusBar->showMessage("");
+    //ui->statusBar->setStyleSheet("color: unset");
 
     QString input = ui->lineEdit->text();
 
     qDebug() << input;
     QSqlQuery query;
     QString result;
+
+
+
+
+
+
+
+
     QStandardItemModel *model = new QStandardItemModel();
     model->setColumnCount(5);
     model->setHorizontalHeaderItem(0, new QStandardItem(QString("Связь ключ-сотрудник")));
@@ -77,6 +88,8 @@ void MainWindow::on_pushButton_clicked()
     emplName = input;
     QTime myTimer;
     myTimer.start();
+
+
     if (query.exec("SELECT \"keys\".\"ISetName\" as keyOfEmployee, 													" \
                    "	\"iKey\".\"IName\" AS nameOfKey, 															" \
                    "	\"sSection\".\"ISetName\" AS nameOfAuthority , 												" \
@@ -155,6 +168,8 @@ void MainWindow::on_action_triggered()
 {
     AppSettings *s = new AppSettings(this);
     s->show();
+    qDebug() << "any actions";
+    //this->connectHandler->Diconnect();
     //statusBar()->showMessage("Настройки сохранены");
 }
 

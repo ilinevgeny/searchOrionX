@@ -2,6 +2,7 @@
 #define DBORIONENGINE_H
 #include <QObject>
 #include <QSqlDatabase>
+#include "appsettings.h"
 
 struct DBParams
 {
@@ -18,7 +19,8 @@ class DBOrionEngine : public QObject
     Q_OBJECT
 public:
     DBOrionEngine(QString driver, QString server, QString dbName, int port, QString userName, QString password);
-    void Connect();
+    DBOrionEngine(AppSettings*);
+    QSqlDatabase Connect();
     void Diconnect();
     bool statusConnect;
 

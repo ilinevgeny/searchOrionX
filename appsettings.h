@@ -17,6 +17,8 @@ public:
     explicit AppSettings(QWidget *parent = nullptr);
     ~AppSettings();
     bool correctSettings;
+    QString getSetting(QString setName);
+    void setSettings(QString driver, QString server, QString dbName, QString port, QString userName, QString password);
 
 private slots:
     void on_pushButton_clicked();
