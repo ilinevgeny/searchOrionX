@@ -25,6 +25,8 @@ private slots:
     void on_lineEdit_returnPressed();
 
 
+    void on_tableView_2_doubleClicked(const QModelIndex &index);
+
 private:
     Ui::MainWindow *ui;
     QString sqlRequest;
